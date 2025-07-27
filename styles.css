@@ -62,7 +62,6 @@ section {
   background-image: url('hero-pattern.png');
   background-size: cover;
   background-position: center;
-  animation: moveBG 60s linear infinite;
 }
 
 @keyframes moveBG {
