@@ -76,9 +76,10 @@ section {
 .hero-content {
   z-index: 2;
   /* Increase padding and width to better align with the rest of the layout */
-  padding: 3rem 4rem;
-  width: 80%;
-  max-width: 900px;
+  /* Increase the hero content panel size to better align with other sections */
+  padding: 4rem 5rem;
+  width: 90%;
+  max-width: 1000px;
   backdrop-filter: blur(5px);
   /* Darker semi‑transparent panel behind hero text for contrast */
   background-color: rgba(27, 27, 27, 0.65);
