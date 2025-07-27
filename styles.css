@@ -100,7 +100,8 @@ section {
 .tagline {
   margin-top: 0.5rem;
   font-family: 'Permanent Marker', cursive;
-  font-size: clamp(1rem, 4vw, 2rem);
+  /* Increase tagline font size slightly to balance with larger logo */
+  font-size: clamp(1.2rem, 5vw, 2.5rem);
   color: var(--creamy-yellow);
 }
 
@@ -108,8 +109,9 @@ section {
 .hero-logo {
   /* The hero logo should be sized similarly to the previous text logo. */
   display: block;
-  width: 45%;
-  max-width: 250px;
+  /* Increase the logo size for better prominence on hero section */
+  width: 55%;
+  max-width: 320px;
   height: auto;
   margin-left: auto;
   margin-right: auto;
