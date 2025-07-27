@@ -58,7 +58,8 @@ section {
   min-height: 100vh;
   text-align: center;
   color: var(--beige);
-  background-image: url('../assets/hero-pattern.png');
+  /* Use root-level hero-pattern for GitHub Pages */
+  background-image: url('hero-pattern.png');
   background-size: cover;
   background-position: center;
   animation: moveBG 60s linear infinite;
