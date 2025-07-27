@@ -70,5 +70,17 @@
   document.addEventListener('DOMContentLoaded', () => {
     initPhraseGenerator();
     initIntersectionAnimations();
+
+    // Apply a lightweight parallax effect on the hero background when
+    // scrolling. This improves interactivity on mobile devices by
+    // updating the background position based on the scroll offset.
+    const heroSection = document.getElementById('hero');
+    if (heroSection) {
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        // Move the background at a slower rate (0.3) than the scroll for parallax.
+        heroSection.style.backgroundPositionY = `${scrollTop * 0.3}px`;
+      });
+    }
   });
 })();
