@@ -1,0 +1,296 @@
+/*
+  Stylesheet for the (un)lucky one‑page brand site
+
+  This CSS is mobile‑first and uses modern layout techniques like
+  flexbox and CSS Grid. Colours are defined as CSS variables in
+  :root to allow easy adjustments to the palette. Simple scroll
+  animations are triggered via JavaScript by toggling the
+  `.visible` class on elements with the `.fade‑in` class.
+
+  A subtle parallax effect is achieved on the hero section by
+  animating the background position.
+*/
+
+/* Colour palette defined according to the brief */
+:root {
+  --beige: #f7f1e1;
+  --electric-blue: #0066bb;
+  --vintage-red: #d63d2d;
+  --pastel-lilac: #c4a4e1;
+  --creamy-yellow: #f7d974;
+  --clover-green: #45a85a;
+  --dark: #1b1b1b;
+  --max-width: 1200px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  background-color: var(--beige);
+  color: var(--dark);
+  line-height: 1.5;
+}
+
+/* Generic section styles */
+section {
+  position: relative;
+  padding: 4rem 1rem;
+  overflow: hidden;
+}
+
+/* Container to constrain content width on larger screens */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Hero section */
+#hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  color: var(--beige);
+  background-image: url('../assets/hero-pattern.png');
+  background-size: cover;
+  background-position: center;
+  animation: moveBG 60s linear infinite;
+}
+
+@keyframes moveBG {
+  from {
+    background-position: 50% 0;
+  }
+  to {
+    background-position: 50% 100%;
+  }
+}
+
+.hero-content {
+  z-index: 2;
+  padding: 2rem;
+  backdrop-filter: blur(5px);
+  /* Darker semi‑transparent panel behind hero text for contrast */
+  background-color: rgba(27, 27, 27, 0.65);
+  border-radius: 10px;
+}
+
+.logo {
+  margin: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 10vw, 6rem);
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.logo span.luck {
+  color: var(--vintage-red);
+}
+.tagline {
+  margin-top: 0.5rem;
+  font-family: 'Permanent Marker', cursive;
+  font-size: clamp(1rem, 4vw, 2rem);
+  color: var(--creamy-yellow);
+}
+
+/* About section */
+#about {
+  background-color: var(--beige);
+}
+
+.about-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.about-text {
+  flex: 1;
+}
+.about-text h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  margin-top: 0;
+  color: var(--electric-blue);
+  letter-spacing: 0.03em;
+}
+.about-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.about-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.about-image img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Concept section */
+#concept {
+  background-color: var(--pastel-lilac);
+  color: var(--dark);
+}
+.concept-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+.concept-text {
+  text-align: center;
+  max-width: 700px;
+}
+.concept-text h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  margin: 0;
+  color: var(--vintage-red);
+}
+.concept-text p {
+  margin-top: 1rem;
+  font-size: 1.15rem;
+}
+.concept-interactive {
+  margin-top: 2rem;
+}
+.concept-interactive button {
+  background-color: var(--electric-blue);
+  color: var(--beige);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+.concept-interactive button:hover {
+  background-color: var(--clover-green);
+}
+.concept-interactive .phrase {
+  margin-top: 1rem;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.5rem;
+  color: var(--electric-blue);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* Lookbook section */
+#lookbook {
+  background-color: var(--beige);
+}
+.lookbook-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.lookbook-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.lookbook-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.lookbook-item:hover img {
+  transform: scale(1.08);
+}
+
+/* Final manifesto section */
+#manifesto {
+  background-color: var(--vintage-red);
+  color: var(--beige);
+  text-align: center;
+  padding: 6rem 1rem;
+}
+#manifesto h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem;
+  margin: 0 0 1rem 0;
+}
+#manifesto p {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+#manifesto a {
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--vintage-red);
+  background-color: var(--beige);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+#manifesto a:hover {
+  background-color: var(--creamy-yellow);
+}
+
+/* Footer */
+footer {
+  background-color: var(--dark);
+  color: var(--beige);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+footer a {
+  color: var(--creamy-yellow);
+  text-decoration: none;
+  font-weight: bold;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Fade‑in animation classes triggered by JS */
+.fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .about-grid {
+    flex-direction: row;
+    align-items: center;
+  }
+  .concept-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .concept-interactive {
+    margin-left: 2rem;
+    flex: 1;
+  }
+  .concept-text {
+    text-align: left;
+    flex: 1;
+  }
+}
