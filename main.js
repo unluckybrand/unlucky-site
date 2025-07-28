@@ -102,7 +102,6 @@ function initLookbookAlbums() {
   const albumOverlay = document.getElementById('album-overlay');
   const albumContainer = albumOverlay ? albumOverlay.querySelector('.album-container') : null;
   const zoomOverlay = document.getElementById('zoom-overlay');
-  const tutorialMobile = albumOverlay ? albumOverlay.querySelector('.tutorial-mobile') : null;
   const closeBtn = albumOverlay ? albumOverlay.querySelector('.close-overlay') : null;
 
   // Define albums: the first image is the cover but is still included in the gallery.
@@ -111,6 +110,9 @@ function initLookbookAlbums() {
     album2: ['lookbook4.jpg'],
     album3: ['lookbook3.jpg']
   };
+
+  // List of albums marked as coming soon / disabled
+  const disabledAlbums = ['album2', 'album3'];
 
   let currentImages = [];
   let offset = 0;
@@ -150,6 +152,13 @@ function initLookbookAlbums() {
         openZoom(imgSrc);
         e.stopPropagation();
       });
+      // Zoom on tap for mobile (touchend on the image)
+      imgEl.addEventListener('touchend', (e) => {
+        if (!isTouchDevice()) return;
+        // Prevent this touchend from bubbling up and interfering with container events
+        e.stopPropagation();
+        openZoom(imgSrc);
+      });
       albumContainer.appendChild(imgEl);
     }
   }
@@ -178,6 +187,8 @@ function initLookbookAlbums() {
 
   // Open selected album
   function openAlbum(key) {
+    // Do nothing if album is disabled
+    if (disabledAlbums.includes(key)) return;
     currentImages = albums[key] ? [...albums[key]] : [];
     offset = 0;
     // Ensure the overlay is visible before positioning images so that
@@ -187,13 +198,6 @@ function initLookbookAlbums() {
     setTimeout(() => {
       renderImages();
     }, 20);
-    // Show tutorial on mobile then fade out
-    if (tutorialMobile) {
-      tutorialMobile.style.opacity = '1';
-      setTimeout(() => {
-        tutorialMobile.style.opacity = '0';
-      }, 4000);
-    }
   }
 
   // Close overlay
@@ -207,12 +211,17 @@ function initLookbookAlbums() {
     const key = albumEl.dataset.album;
     if (!key) return;
     // Desktop: open on hover
+    // Skip adding interactions for disabled albums
+    const isDisabled = disabledAlbums.includes(key);
+    // Desktop: open on hover
     albumEl.addEventListener('mouseenter', () => {
+      if (isDisabled) return;
       if (isTouchDevice()) return;
       openAlbum(key);
     });
     // Mobile: long press for 2 seconds
     albumEl.addEventListener('touchstart', () => {
+      if (isDisabled) return;
       if (!isTouchDevice()) return;
       longPressTimer = setTimeout(() => {
         openAlbum(key);
@@ -287,15 +296,6 @@ function initLookbookAlbums() {
         }
         touchStartX = touch.clientX;
         touchStartY = touch.clientY;
-      }
-      // Upward swipe triggers zoom into current image
-      if (deltaY < -60) {
-        if (currentImages.length > 0) {
-          const currentSrc = currentImages[offset];
-          openZoom(currentSrc);
-        }
-        touchStartX = null;
-        touchStartY = null;
       }
     });
     albumContainer.addEventListener('touchend', () => {

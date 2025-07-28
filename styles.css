@@ -316,6 +316,28 @@ section {
   transform: scale(1.05);
 }
 
+/* Coming soon styling for inactive albums (David and boat) */
+.album.coming-soon img {
+  /* Apply a moderate blur to suggest teaser without revealing full content */
+  filter: blur(4px);
+}
+.album.coming-soon::after {
+  content: "COMING SOON";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--beige);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
 /* Overlay for active album */
 .album-overlay {
   position: fixed;
@@ -346,7 +368,7 @@ section {
   height: 35%;
   border-radius: 10px;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s ease-in-out;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -418,6 +440,47 @@ section {
 @media (max-width: 600px) {
   .tutorial-mobile {
     display: flex;
+  }
+}
+
+/* Global lookbook tutorial displayed beneath albums */
+.lookbook-tutorial {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.lookbook-tutorial .tutorial-mobile-global,
+.lookbook-tutorial .tutorial-desktop-global {
+  display: none;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.lookbook-tutorial .tutorial-step {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: rgba(247, 241, 225, 0.8);
+  color: var(--dark);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+.lookbook-tutorial .icon {
+  opacity: 0.7;
+  font-size: 1rem;
+}
+@media (max-width: 600px) {
+  .lookbook-tutorial .tutorial-mobile-global {
+    display: flex;
+    align-items: center;
+  }
+}
+@media (min-width: 601px) {
+  .lookbook-tutorial .tutorial-desktop-global {
+    display: flex;
+    align-items: center;
   }
 }
 #manifesto h2 {

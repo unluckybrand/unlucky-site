@@ -75,13 +75,16 @@
         <h2 class="fade-in" style="font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--electric-blue); text-align: center; margin-bottom: 2rem;">Lookbook</h2>
         <div class="lookbook-albums">
           <!-- Interactive albums: each album opens an orbiting gallery. -->
+          <!-- Album 1: fully functional (hands/clover) -->
           <div class="album fade-in" data-album="album1">
             <img src="lookbook5.jpeg" alt="Illustrazione delle mani che porgono un quadrifoglio" class="album-cover" />
           </div>
-          <div class="album fade-in" data-album="album2">
+          <!-- Album 2: coming soon (David) -->
+          <div class="album fade-in coming-soon" data-album="album2" data-disabled="true">
             <img src="lookbook4.jpg" alt="Grafica pop‑art con busto di David bendato e scritte" class="album-cover" />
           </div>
-          <div class="album fade-in" data-album="album3">
+          <!-- Album 3: coming soon (Boat) -->
+          <div class="album fade-in coming-soon" data-album="album3" data-disabled="true">
             <img src="lookbook3.jpg" alt="Grafica pop‑art con barca e ali (Adjust Your Sails)" class="album-cover" />
           </div>
         </div>
@@ -89,15 +92,25 @@
         <div id="album-overlay" class="album-overlay">
           <button class="close-overlay" aria-label="Chiudi album">&times;</button>
           <div class="album-container"></div>
-          <!-- Mini tutorial displayed only on mobile -->
-          <div class="tutorial-mobile">
-            <div class="tutorial-step"><span class="icon">&#x23F1;</span><span>Tieni premuto per 2 sec sugli album</span></div>
-            <div class="tutorial-step"><span class="icon">&#x2194;</span><span>Scorri lateralmente per vedere le foto</span></div>
-            <div class="tutorial-step"><span class="icon">&#x2191;</span><span>Scorri in alto per ingrandire</span></div>
-          </div>
         </div>
         <!-- Overlay for zoomed image -->
         <div id="zoom-overlay" class="zoom-overlay"></div>
+          <!-- Global lookbook tutorial displayed below albums -->
+          <div class="lookbook-tutorial">
+            <!-- Mobile tutorial: visible on mobile screens -->
+            <div class="tutorial-mobile-global">
+              <div class="tutorial-step"><span class="icon">&#x23F1;</span><span>Tieni premuto per 2 sec sugli album</span></div>
+              <div class="tutorial-step"><span class="icon">&#x2194;</span><span>Scorri lateralmente per vedere le foto</span></div>
+              <div class="tutorial-step"><span class="icon">&#x261E;</span><span>Tocca una foto per ingrandirla</span></div>
+            </div>
+            <!-- Desktop tutorial: visible on desktop screens -->
+            <div class="tutorial-desktop-global">
+              <div class="tutorial-step"><span class="icon">&#x1F5B1;</span><span>Passa sopra un album per aprirlo</span></div>
+              <div class="tutorial-step"><span class="icon">&#x2194;</span><span>Muovi il cursore per sfogliare le foto</span></div>
+              <div class="tutorial-step"><span class="icon">&#x261E;</span><span>Clicca una foto per ingrandirla</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
