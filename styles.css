@@ -278,6 +278,148 @@ section {
   text-align: center;
   padding: 6rem 1rem;
 }
+
+/* =======================================================
+   Interactive lookbook album styles
+   The lookbook has been redesigned into three albums. Each album
+   opens on hover (desktop) or long press (mobile) and displays
+   its images arranged around a central point. The images orbit
+   around the center when navigating horizontally, and any image
+   can be zoomed via click (desktop) or upward swipe (mobile).
+   A discrete tutorial appears only on mobile to guide users.
+======================================================= */
+
+/* Album grid */
+.lookbook-albums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+.album {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.album img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.album:hover img {
+  transform: scale(1.05);
+}
+
+/* Overlay for active album */
+.album-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+.album-overlay.active {
+  display: flex;
+}
+/* Container that holds images in orbit */
+.album-container {
+  position: relative;
+  width: 80vmin;
+  height: 80vmin;
+  max-width: 600px;
+  max-height: 600px;
+}
+.album-container .album-image {
+  position: absolute;
+  width: 35%;
+  height: 35%;
+  border-radius: 10px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Close button for album overlay */
+.close-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--beige);
+  font-size: 2.5rem;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+/* Zoom overlay for enlarged image */
+.zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.zoom-overlay.active {
+  display: flex;
+}
+.zoom-overlay img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile tutorial overlay */
+.tutorial-mobile {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(247, 241, 225, 0.8);
+  color: var(--dark);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.tutorial-mobile .tutorial-step {
+  display: flex;
+  align-items: center;
+}
+.tutorial-mobile .icon {
+  margin-right: 0.4rem;
+  opacity: 0.7;
+  font-size: 1rem;
+}
+@media (max-width: 600px) {
+  .tutorial-mobile {
+    display: flex;
+  }
+}
 #manifesto h2 {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 3.5rem;

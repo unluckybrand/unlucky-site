@@ -73,27 +73,31 @@
     <section id="lookbook">
       <div class="container">
         <h2 class="fade-in" style="font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--electric-blue); text-align: center; margin-bottom: 2rem;">Lookbook</h2>
-        <div class="lookbook-grid">
-          <!-- Lookbook images: two real photos followed by the hands graphic,
-               the boat artwork and the blindfolded David illustration.  -->
-          <div class="lookbook-item fade-in">
-            <img src="lookbook1.jpg" alt="Foto reale di due ragazzi con t‑shirt (un)lucky" />
+        <div class="lookbook-albums">
+          <!-- Interactive albums: each album opens an orbiting gallery. -->
+          <div class="album fade-in" data-album="album1">
+            <img src="lookbook5.jpeg" alt="Illustrazione delle mani che porgono un quadrifoglio" class="album-cover" />
           </div>
-          <div class="lookbook-item fade-in">
-            <img src="lookbook2.jpg" alt="Foto reale di ragazzo visto di schiena con t‑shirt (un)lucky" />
+          <div class="album fade-in" data-album="album2">
+            <img src="lookbook4.jpg" alt="Grafica pop‑art con busto di David bendato e scritte" class="album-cover" />
           </div>
-          <div class="lookbook-item fade-in">
-            <img src="lookbook5.jpeg" alt="Illustrazione delle mani che porgono un quadrifoglio" />
-          </div>
-          <!-- Boat artwork: blur and overlay Coming Soon -->
-          <div class="lookbook-item fade-in coming-soon">
-            <img src="lookbook3.jpg" alt="Grafica pop‑art con barca e ali (Adjust Your Sails)" />
-          </div>
-          <!-- David illustration: blur and overlay Coming Soon -->
-          <div class="lookbook-item fade-in coming-soon">
-            <img src="lookbook4.jpg" alt="Grafica pop‑art con busto di David bendato e scritte" />
+          <div class="album fade-in" data-album="album3">
+            <img src="lookbook3.jpg" alt="Grafica pop‑art con barca e ali (Adjust Your Sails)" class="album-cover" />
           </div>
         </div>
+        <!-- Overlay for album galleries -->
+        <div id="album-overlay" class="album-overlay">
+          <button class="close-overlay" aria-label="Chiudi album">&times;</button>
+          <div class="album-container"></div>
+          <!-- Mini tutorial displayed only on mobile -->
+          <div class="tutorial-mobile">
+            <div class="tutorial-step"><span class="icon">&#x23F1;</span><span>Tieni premuto per 2 sec sugli album</span></div>
+            <div class="tutorial-step"><span class="icon">&#x2194;</span><span>Scorri lateralmente per vedere le foto</span></div>
+            <div class="tutorial-step"><span class="icon">&#x2191;</span><span>Scorri in alto per ingrandire</span></div>
+          </div>
+        </div>
+        <!-- Overlay for zoomed image -->
+        <div id="zoom-overlay" class="zoom-overlay"></div>
       </div>
     </section>
 
