@@ -103,6 +103,8 @@ section {
   /* Increase tagline font size slightly to balance with larger logo */
   font-size: clamp(1.2rem, 5vw, 2.5rem);
   color: var(--creamy-yellow);
+  /* Apply a thin black outline via multiple text-shadows for better contrast */
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 /* Hero logo image styling */
@@ -118,6 +120,18 @@ section {
   margin-bottom: 1rem;
   /* Remove the drop shadow to match a flat look */
   filter: none;
+}
+
+/* Responsive adjustments for mobile screens */
+@media (max-width: 600px) {
+  /* Increase hero logo and tagline sizes on small screens */
+  .hero-logo {
+    width: 65%;
+    max-width: 300px;
+  }
+  .tagline {
+    font-size: clamp(1.4rem, 6vw, 3rem);
+  }
 }
 
 /* About section */
