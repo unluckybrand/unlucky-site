@@ -249,6 +249,28 @@ section {
   transform: scale(1.08);
 }
 
+/* Coming soon styling for specific lookbook items (boat and David graphics) */
+.lookbook-item.coming-soon img {
+  /* Apply a moderate blur to indicate teaser without hiding completely */
+  filter: blur(5px);
+}
+
+.lookbook-item.coming-soon::after {
+  content: "Coming Soon";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--beige);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
 /* Final manifesto section */
 #manifesto {
   background-color: var(--vintage-red);
