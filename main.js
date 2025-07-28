@@ -100,78 +100,49 @@
 */
 function initLookbookAlbums() {
   const albumOverlay = document.getElementById('album-overlay');
-  const albumContainer = albumOverlay ? albumOverlay.querySelector('.album-container') : null;
+  // The slider container that will host the slide wrapper and navigation arrows
+  const albumSlider = albumOverlay ? albumOverlay.querySelector('.album-slider') : null;
   const zoomOverlay = document.getElementById('zoom-overlay');
   const closeBtn = albumOverlay ? albumOverlay.querySelector('.close-overlay') : null;
 
-  // Define albums: the first image is the cover but is still included in the gallery.
+  // Define albums: the first image is the cover but is still included in the gallery
   const albums = {
     album1: ['lookbook5.jpeg', 'lookbook1.jpg', 'lookbook2.jpg'],
     album2: ['lookbook4.jpg'],
     album3: ['lookbook3.jpg']
   };
 
-  // List of albums marked as coming soon / disabled
+  // Albums that are disabled (coming soon)
   const disabledAlbums = ['album2', 'album3'];
 
   let currentImages = [];
-  let offset = 0;
+  let currentIndex = 0;
   let touchStartX = null;
-  let touchStartY = null;
-  let longPressTimer = null;
 
-  // Helper to check for touch devices
+  // Utility: detect touch devices
   function isTouchDevice() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
 
-  // Render images in orbit based on the current offset
-  function renderImages() {
-    if (!albumContainer) return;
-    albumContainer.innerHTML = '';
-    const n = currentImages.length;
-    if (n === 0) return;
-    // radius based on container size and image size (35% -> half width is 17.5%)
-    const radius = albumContainer.clientWidth / 2 - (albumContainer.clientWidth * 0.175);
-    for (let i = 0; i < n; i++) {
-      const imgSrc = currentImages[i];
-      // compute angle (offset reversed for intuitive direction)
-      const angle = ((i + offset) / n) * 2 * Math.PI;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
-      const imgEl = document.createElement('img');
-      imgEl.src = imgSrc;
-      imgEl.className = 'album-image';
-      // center at 50/50 then translate
-      imgEl.style.left = '50%';
-      imgEl.style.top = '50%';
-      imgEl.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-      // Zoom on click for desktop
-      imgEl.addEventListener('click', (e) => {
-        if (isTouchDevice()) return;
-        openZoom(imgSrc);
-        e.stopPropagation();
-      });
-      // Zoom on tap for mobile (touchend on the image)
-      imgEl.addEventListener('touchend', (e) => {
-        if (!isTouchDevice()) return;
-        // Prevent this touchend from bubbling up and interfering with container events
-        e.stopPropagation();
-        openZoom(imgSrc);
-      });
-      albumContainer.appendChild(imgEl);
-    }
+  // Show a specific slide by updating transform
+  function showSlide(index) {
+    if (!albumSlider) return;
+    const wrapper = albumSlider.querySelector('.slide-wrapper');
+    if (!wrapper) return;
+    currentIndex = (index + currentImages.length) % currentImages.length;
+    const translateX = -currentIndex * 100;
+    wrapper.style.transform = `translateX(${translateX}%)`;
   }
 
-  // Rotate images left (-1) or right (+1)
-  function rotate(dir) {
-    if (!currentImages.length) return;
-    // direction sign: positive dir rotates forward; adjust offset accordingly
-    offset = (offset + dir + currentImages.length) % currentImages.length;
-    renderImages();
+  // Navigate to previous and next slides
+  function prevSlide() {
+    showSlide(currentIndex - 1);
+  }
+  function nextSlide() {
+    showSlide(currentIndex + 1);
   }
 
-  // Open the zoom overlay
+  // Open the zoom overlay with a given image
   function openZoom(src) {
     if (!zoomOverlay) return;
     zoomOverlay.innerHTML = '';
@@ -185,22 +156,85 @@ function initLookbookAlbums() {
     zoomOverlay && zoomOverlay.classList.remove('active');
   }
 
-  // Open selected album
-  function openAlbum(key) {
-    // Do nothing if album is disabled
-    if (disabledAlbums.includes(key)) return;
-    currentImages = albums[key] ? [...albums[key]] : [];
-    offset = 0;
-    // Ensure the overlay is visible before positioning images so that
-    // container dimensions are available. Otherwise images will stack.
-    if (albumOverlay) albumOverlay.classList.add('active');
-    // Render images after a short delay (next event loop) to let layout compute
-    setTimeout(() => {
-      renderImages();
-    }, 20);
+  // Render the slider for the currently selected album
+  function renderSlider() {
+    if (!albumSlider) return;
+    albumSlider.innerHTML = '';
+    if (currentImages.length === 0) return;
+    // Create wrapper to hold slides
+    const wrapper = document.createElement('div');
+    wrapper.className = 'slide-wrapper';
+    currentImages.forEach((src) => {
+      const img = document.createElement('img');
+      img.src = src;
+      // Zoom on click/tap
+      img.addEventListener('click', () => {
+        openZoom(src);
+      });
+      // For mobile, pinch zoom isn't implemented; tapping suffices
+      wrapper.appendChild(img);
+    });
+    albumSlider.appendChild(wrapper);
+    // Add navigation arrows for desktop if more than one image
+    if (currentImages.length > 1) {
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'prev-slide';
+      prevBtn.innerHTML = '&#10094;';
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        prevSlide();
+      });
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'next-slide';
+      nextBtn.innerHTML = '&#10095;';
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nextSlide();
+      });
+      // Only show arrows on desktop
+      if (!isTouchDevice()) {
+        albumSlider.appendChild(prevBtn);
+        albumSlider.appendChild(nextBtn);
+      }
+    }
+    // Set up touch swipe for mobile navigation
+    wrapper.addEventListener('touchstart', (e) => {
+      if (!isTouchDevice()) return;
+      touchStartX = e.touches[0].clientX;
+    });
+    wrapper.addEventListener('touchmove', (e) => {
+      if (!isTouchDevice()) return;
+      if (touchStartX === null) return;
+      const deltaX = e.touches[0].clientX - touchStartX;
+      // Minimal horizontal threshold for slide change
+      if (Math.abs(deltaX) > 50) {
+        if (deltaX > 0) {
+          prevSlide();
+        } else {
+          nextSlide();
+        }
+        touchStartX = e.touches[0].clientX;
+      }
+    });
+    wrapper.addEventListener('touchend', () => {
+      touchStartX = null;
+    });
+    // Initially show the first slide
+    showSlide(0);
   }
 
-  // Close overlay
+  // Open an album (if not disabled) and render its images
+  function openAlbum(key) {
+    if (disabledAlbums.includes(key)) return;
+    currentImages = albums[key] ? [...albums[key]] : [];
+    currentIndex = 0;
+    if (albumOverlay) {
+      albumOverlay.classList.add('active');
+    }
+    renderSlider();
+  }
+
+  // Close album overlay
   function closeAlbum() {
     albumOverlay && albumOverlay.classList.remove('active');
   }
@@ -210,97 +244,43 @@ function initLookbookAlbums() {
   albumEls.forEach((albumEl) => {
     const key = albumEl.dataset.album;
     if (!key) return;
-    // Desktop: open on hover
-    // Skip adding interactions for disabled albums
     const isDisabled = disabledAlbums.includes(key);
-    // Desktop: open on hover
-    albumEl.addEventListener('mouseenter', () => {
-      if (isDisabled) return;
-      if (isTouchDevice()) return;
+    // Do nothing for disabled albums
+    if (isDisabled) return;
+    // For both mobile and desktop, use click to open album.
+    albumEl.addEventListener('click', (e) => {
+      e.preventDefault();
       openAlbum(key);
     });
-    // Mobile: long press for 2 seconds
-    albumEl.addEventListener('touchstart', () => {
-      if (isDisabled) return;
+    // On touch devices, also bind touchend to open immediately and prevent the delayed click
+    albumEl.addEventListener('touchend', (e) => {
       if (!isTouchDevice()) return;
-      longPressTimer = setTimeout(() => {
-        openAlbum(key);
-      }, 2000);
-    });
-    albumEl.addEventListener('touchend', () => {
-      if (!isTouchDevice()) return;
-      clearTimeout(longPressTimer);
-    });
-    albumEl.addEventListener('touchmove', () => {
-      if (!isTouchDevice()) return;
-      clearTimeout(longPressTimer);
+      e.preventDefault();
+      openAlbum(key);
     });
   });
 
-  // Close overlay on clicking the close button
+  // Close overlay when clicking the close button or outside of slider
   closeBtn && closeBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     closeAlbum();
   });
-  // Close overlay when clicking outside the container
   albumOverlay && albumOverlay.addEventListener('click', (e) => {
     if (e.target === albumOverlay) {
       closeAlbum();
     }
   });
-
   // Close zoom overlay on click
   zoomOverlay && zoomOverlay.addEventListener('click', () => {
     closeZoom();
   });
-
-  // Desktop navigation: rotate on mouse move
-  if (albumContainer) {
-    let lastMoveTime = 0;
-    albumContainer.addEventListener('mousemove', (e) => {
-      if (isTouchDevice()) return;
-      const now = Date.now();
-      // throttle rotations to avoid rapid spinning
-      if (now - lastMoveTime < 200) return;
-      lastMoveTime = now;
-      const rect = albumContainer.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const center = rect.width / 2;
-      // Determine direction by comparing to center
-      if (x > center + rect.width * 0.15) {
-        rotate(-1);
-      } else if (x < center - rect.width * 0.15) {
-        rotate(1);
-      }
-    });
-
-    // Mobile navigation: horizontal swipe rotates; upward swipe zooms
-    albumContainer.addEventListener('touchstart', (e) => {
-      if (!isTouchDevice()) return;
-      const touch = e.touches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-    });
-    albumContainer.addEventListener('touchmove', (e) => {
-      if (!isTouchDevice()) return;
-      if (touchStartX === null || touchStartY === null) return;
-      const touch = e.touches[0];
-      const deltaX = touch.clientX - touchStartX;
-      const deltaY = touch.clientY - touchStartY;
-      // Horizontal swipe triggers rotation
-      if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 40) {
-        if (deltaX > 0) {
-          rotate(-1);
-        } else {
-          rotate(1);
-        }
-        touchStartX = touch.clientX;
-        touchStartY = touch.clientY;
-      }
-    });
-    albumContainer.addEventListener('touchend', () => {
-      touchStartX = null;
-      touchStartY = null;
-    });
-  }
+  // Keyboard navigation for desktop
+  document.addEventListener('keydown', (e) => {
+    if (!albumOverlay || !albumOverlay.classList.contains('active')) return;
+    if (e.key === 'ArrowLeft') {
+      prevSlide();
+    } else if (e.key === 'ArrowRight') {
+      nextSlide();
+    }
+  });
 }
