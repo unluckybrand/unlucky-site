@@ -100,7 +100,8 @@
 function initLookbookAlbums() {
   const albumOverlay = document.getElementById('album-overlay');
   // The slider container that will host the slide wrapper and navigation arrows
-  const albumSlider = albumOverlay ? albumOverlay.querySelector('.album-slider') : null;
+  // Use .album-container instead of .album-slider to match the HTML structure
+  const albumSlider = albumOverlay ? albumOverlay.querySelector('.album-container') : null;
   const zoomOverlay = document.getElementById('zoom-overlay');
   const closeBtn = albumOverlay ? albumOverlay.querySelector('.close-overlay') : null;
 
