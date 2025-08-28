@@ -1,11 +1,11 @@
 /*
-  Main JavaScript for the (un)lucky one‑page site
+      Main JavaScript for the (un)lucky one‑page site
 
-  Handles:
-  – Generating random philosophy phrases in the concept section
-  – Observing elements with the `.fade-in` class to trigger
-    animations when they come into view
-*/
+      Handles:
+      – Generating random philosophy phrases in the concept section
+      – Observing elements with the `.fade-in` class to trigger
+        animations when they come into view
+    */
 
 (function () {
   // Array of inspirational phrases reflecting the (un)lucky philosophy
@@ -91,12 +91,11 @@
 /*
   Interactive lookbook implementation
 
-  This function handles the dynamic album system. Albums open on hover (desktop)
-  or long press (mobile). Once open, the images of the selected album are
-  arranged around a circle and can be navigated by moving horizontally
-  (mouse or swipe). Images orbit around the center rather than spinning on
-  their own axes. Clicking (desktop) or swiping upward (mobile) zooms into
-  the current image. A small tutorial overlay guides mobile users.
+  This function handles the dynamic album system. Albums open on click (desktop
+  and mobile). Once open, the images of the selected album are displayed in a
+  horizontal slider similar to a phone gallery. Users can swipe (on touch
+  devices) or use arrow buttons / keyboard (on desktop) to navigate between
+  images. Tapping or clicking an image opens it in a zoom overlay.
 */
 function initLookbookAlbums() {
   const albumOverlay = document.getElementById('album-overlay');
@@ -107,7 +106,21 @@ function initLookbookAlbums() {
 
   // Define albums: the first image is the cover but is still included in the gallery
   const albums = {
-    album1: ['lookbook5.jpeg', 'lookbook1.jpg', 'lookbook2.jpg'],
+    album1: [
+      'lookbook5.jpeg',
+      'lookbook1.jpg',
+      'lookbook2.jpg',
+      // Newly added lifestyle photos
+      'lifestyle1.jpg',
+      'lifestyle2.jpg',
+      'lifestyle3.jpg',
+      'lifestyle4.jpg',
+      // Apparel shots: white front/back then black front/back
+      'white_front.jpg',
+      'white_back.jpg',
+      'black_front.jpg',
+      'black_back.jpg'
+    ],
     album2: ['lookbook4.jpg'],
     album3: ['lookbook3.jpg']
   };
