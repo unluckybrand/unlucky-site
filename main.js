@@ -104,6 +104,7 @@ function initLookbookAlbums() {
   const zoomOverlay = document.getElementById('zoom-overlay');
   const closeBtn = albumOverlay ? albumOverlay.querySelector('.close-overlay') : null;
 
+      
   // Define albums: the first image is the cover but is still included in the gallery
   const albums = {
     album1: [
